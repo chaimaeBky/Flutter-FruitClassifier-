@@ -5,6 +5,7 @@ import 'screens/login_page.dart';
 import 'screens/register_page.dart';
 import 'screens/fruitsClassifier_page.dart';
 import 'screens/EmsiChat_page.dart';
+import 'screens/profile_page.dart';
 import 'package:firebase_core/firebase_core.dart'; 
 import 'firebase_options.dart'; 
 import 'package:firebase_auth/firebase_auth.dart'; 
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/fruits': (context) => FruitClassifierPage(),
         '/chat': (context) => const ChatPage(),
+        '/profile': (context) => const ProfilePage(),
       },
     );
   }

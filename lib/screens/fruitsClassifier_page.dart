@@ -261,32 +261,26 @@ class _FruitClassifierPageState extends State<FruitClassifierPage> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pushNamed(context, "/home");
-              },
-            ),
-            ListTile(
               leading: const Icon(Icons.analytics),
-              title: const Text('Fruit Classifier'),
+              title: const Text('Fruits classifier'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, "/fruits"); 
               },
             ),
             ListTile(
               leading: const Icon(Icons.chat),
-              title: const Text('EMSI CHATBOT'),
-              onTap: () {
-                Navigator.pushNamed(context, "/home");
+              title: const Text('Emsi CHATBOT'),
+               onTap: () {
+                Navigator.pushNamed(context, '/chat');
               },
             ),
             Divider(color: Colors.grey),
             ListTile(
               leading: const Icon(Icons.account_circle),
-              title: const Text('Profile'),
+              title: const Text('/profile'),
               onTap: () {
-                Navigator.pushNamed(context, "/home");
+                // Navigate to Profile Page
+                Navigator.pop(context);
               },
             ),
             ListTile(
@@ -294,14 +288,15 @@ class _FruitClassifierPageState extends State<FruitClassifierPage> {
               trailing: const Icon(Icons.arrow_forward),
               title: const Text('Settings'),
               onTap: () {
-                Navigator.pushNamed(context, "/home");
+                // Navigate to Settings Page
+                Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Logout'),
               onTap: () {
-                Navigator.pushNamed(context, "/home");
+                Navigator.pushNamed(context, "/login");
               },
             ),
           ],

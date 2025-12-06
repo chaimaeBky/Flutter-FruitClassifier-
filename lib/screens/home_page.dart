@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
             Divider(color: Colors.grey),
             ListTile(
               leading: const Icon(Icons.account_circle),
-              title: const Text('Profile'),
+              title: const Text('/profile'),
               onTap: () {
                 // Navigate to Profile Page
                 Navigator.pop(context);
