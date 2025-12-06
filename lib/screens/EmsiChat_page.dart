@@ -336,10 +336,9 @@ class _ChatPageState extends State<ChatPage> {
             Divider(color: Colors.grey),
             ListTile(
               leading: const Icon(Icons.account_circle),
-              title: const Text('/profile'),
+              title: const Text('profile'),
               onTap: () {
-                // Navigate to Profile Page
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/profile');
               },
             ),
             ListTile(

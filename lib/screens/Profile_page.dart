@@ -13,10 +13,10 @@ class _ProfilePageState extends State<ProfilePage> {
     'Nom Complet': 'Chaimae El Bakay',
     'Email': 'chaimae.elbakay@emsi.ma',
     'Téléphone': '+212 6 12 34 56 78',
-    'Date de Naissance': '15/03/1998',
+    'Date de Naissance': '30/04/2004',
     'Adresse': 'Casablanca, Maroc',
     'Spécialité': 'Intelligence Artificielle',
-    'Année d\'étude': 'Master 2',
+    'Année d\'étude': 'cycle ingénieur 3ème année',
     'Matricule': 'G8-2023-001',
   };
 
@@ -108,10 +108,9 @@ class _ProfilePageState extends State<ProfilePage> {
             Divider(color: Colors.grey),
             ListTile(
               leading: const Icon(Icons.account_circle),
-              title: const Text('/profile'),
+              title: const Text('profile'),
               onTap: () {
-                // Navigate to Profile Page
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/profile');
               },
             ),
             ListTile(
@@ -136,9 +135,11 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // En-tête du profil avec photo
+            // En-tête du profil avec photo - CORRIGÉ
             Container(
-              height: 220,
+              constraints: const BoxConstraints(
+                minHeight: 250, // Hauteur minimale au lieu de hauteur fixe
+              ),
               decoration: BoxDecoration(
                 color: Colors.teal,
                 borderRadius: const BorderRadius.only(
@@ -146,77 +147,88 @@ class _ProfilePageState extends State<ProfilePage> {
                   bottomRight: Radius.circular(30),
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 20),
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 4,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: const CircleAvatar(
-                          backgroundImage: AssetImage('assets/images/profile.png'),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.teal,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Chaimae El Bakay',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  const Text(
-                    'Étudiante en Intelligence Artificielle',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildStatItem('Projects', '3'),
-                      const SizedBox(width: 30),
-                      _buildStatItem('Compétences', '7'),
-                      const SizedBox(width: 30),
-                      _buildStatItem('Année', '2024'),
+                      const SizedBox(height: 10),
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 4,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: const CircleAvatar(
+                              backgroundImage: AssetImage('assets/images/profile.png'),
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.teal,
+                              size: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        'Chaimae El Bakay',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 5),
+                      const Text(
+                        'Étudiante en Intelligence Artificielle',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white70,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 15),
+                      SizedBox(
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _buildStatItem('Projects', '3'),
+                            const SizedBox(width: 30),
+                            _buildStatItem('Compétences', '7'),
+                            const SizedBox(width: 30),
+                            _buildStatItem('Année', '2025'),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
             
@@ -397,11 +409,12 @@ class _ProfilePageState extends State<ProfilePage> {
   // Widget pour afficher les statistiques
   Widget _buildStatItem(String title, String value) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           value,
           style: const TextStyle(
-            fontSize: 22,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -410,7 +423,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 13,
             color: Colors.white70,
           ),
         ),
