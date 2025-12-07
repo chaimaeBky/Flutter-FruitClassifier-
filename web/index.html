@@ -8,6 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="FruitAI - Intelligent Fruit Recognition App by Chaimae EL BAKAY">
 
+  <!-- IMPORTANT: TensorFlow.js DOIT être chargé en premier -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  
+  <!-- Votre modèle TFLite personnalisé -->
+  <script src="tfjs_model.js"></script>
+
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -234,7 +240,7 @@
     </div>
     
     <div class="loading-indicator animate-fade-in delay-3">
-      <div class="loading-text animate-pulse" id="loadingText">Loading application...</div>
+      <div class="loading-text animate-pulse" id="loadingText">Loading AI Models...</div>
       <div class="progress-bar">
         <div class="progress-fill" id="progressBar"></div>
       </div>
@@ -246,8 +252,8 @@
   
   <script>
     // Configuration
-    const TOTAL_LOAD_TIME = 6000; // 6 seconds total display time
-    const PROGRESS_DURATION = 5000; // 5 seconds for progress bar
+    const TOTAL_LOAD_TIME = 5000; // 5 seconds total (plus court)
+    const PROGRESS_DURATION = 4000; // 4 seconds for progress bar
     const FADE_OUT_DURATION = 1000; // 1 second fade out
     
     // Elements
@@ -256,12 +262,12 @@
     const loadingText = document.getElementById('loadingText');
     const flutterContainer = document.getElementById('flutter-container');
     
-    // Loading messages
+    // Loading messages spécifiques pour votre modèle AI
     const loadingMessages = [
-      'Initializing application...',
-      'Loading AI models...',
-      'Preparing interface...',
-      'Almost ready...',
+      'Loading TensorFlow.js...',
+      'Initializing TFLite Model...',
+      'Preparing Fruit Classifier...',
+      'Starting AI Assistant...',
       'Launching Fruit AI...'
     ];
     
@@ -297,23 +303,69 @@
       }, interval);
     }
     
+    // Vérifier que TensorFlow.js est chargé
+    function checkTensorFlowLoaded() {
+      if (typeof tf !== 'undefined') {
+        console.log('✅ TensorFlow.js loaded');
+        
+        // Vérifier si votre modèle TFLite est chargé
+        if (typeof tfjsModel !== 'undefined') {
+          console.log('✅ TFLite Model script loaded');
+          return true;
+        } else {
+          console.warn('⚠️ tfjsModel not found');
+          return false;
+        }
+      } else {
+        console.error('❌ TensorFlow.js not loaded');
+        return false;
+      }
+    }
+    
     // Start Flutter loading
     function startFlutterLoad() {
-      console.log('Starting Flutter load...');
+      console.log('🚀 Starting Flutter load...');
       
-      // Create and load Flutter script
+      // Vérifier que TensorFlow.js et votre modèle sont chargés
+      if (!checkTensorFlowLoaded()) {
+        console.warn('AI models not fully loaded, continuing anyway...');
+      }
+      
+      // Créer et charger le script Flutter
       const script = document.createElement('script');
-      script.src = 'flutter_bootstrap.js';
+      script.src = 'main.dart.js';
+      script.type = 'application/javascript';
       script.async = true;
       
       script.onload = function() {
-        console.log('Flutter script loaded');
-        // Flutter will initialize automatically
+        console.log('✅ Flutter script loaded successfully');
+        
+        // Démarrer l'application Flutter
+        if (typeof _flutter !== 'undefined' && _flutter.loader) {
+          _flutter.loader.loadEntrypoint({
+            serviceWorker: {
+              serviceWorkerVersion: serviceWorkerVersion,
+            }
+          }).then(function(engineInitializer) {
+            return engineInitializer.initializeEngine();
+          }).then(function(appRunner) {
+            return appRunner.runApp();
+          }).then(function() {
+            console.log('🎉 Flutter app running successfully');
+          }).catch(function(error) {
+            console.error('Flutter initialization error:', error);
+            loadingText.textContent = 'Application ready!';
+          });
+        } else {
+          console.error('Flutter loader not found');
+          loadingText.textContent = 'Click to start';
+        }
       };
       
       script.onerror = function(error) {
         console.error('Failed to load Flutter:', error);
-        loadingText.textContent = 'Application loaded successfully!';
+        loadingText.textContent = 'Error loading app. Please refresh.';
+        loadingText.style.color = '#ff6b6b';
       };
       
       document.head.appendChild(script);
@@ -321,7 +373,13 @@
     
     // Fade out loading screen and show Flutter
     function transitionToFlutter() {
-      console.log('Transitioning to Flutter...');
+      console.log('🔄 Transitioning to Flutter...');
+      
+      // Vérifier l'état du modèle AI
+      const aiReady = checkTensorFlowLoaded();
+      loadingText.textContent = aiReady 
+        ? 'AI Models Ready! Launching App...' 
+        : 'Launching App...';
       
       // Add fade out animation
       loadingScreen.classList.add('animate-fade-out');
@@ -337,13 +395,13 @@
         // Start loading Flutter
         startFlutterLoad();
         
-        console.log('Flutter container visible');
+        console.log('📱 Flutter container visible');
       }, FADE_OUT_DURATION);
     }
     
     // Initialize everything
     function init() {
-      console.log('Initializing splash screen...');
+      console.log('🎬 Initializing splash screen...');
       startTime = Date.now();
       
       // Start progress animation
@@ -352,9 +410,15 @@
       // Start updating messages
       updateLoadingMessage();
       
+      // Vérifier rapidement le chargement
+      setTimeout(() => {
+        const aiStatus = checkTensorFlowLoaded();
+        console.log('AI Load Status:', aiStatus ? 'Ready' : 'Not Ready');
+      }, 1000);
+      
       // Schedule transition to Flutter
       setTimeout(() => {
-        console.log('Time reached, transitioning...');
+        console.log('⏰ Time reached, transitioning...');
         transitionToFlutter();
       }, TOTAL_LOAD_TIME);
       

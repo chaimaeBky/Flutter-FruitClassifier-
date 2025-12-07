@@ -320,6 +320,13 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
             ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.pushNamed(context, "/home"); 
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.analytics),
               title: const Text('Fruits classifier'),
               onTap: () {
